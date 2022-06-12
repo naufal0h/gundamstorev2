@@ -24,6 +24,12 @@ const addItems =  async (item) => {
             url: URL + "/create",
             data: item
         })
+
+        swal.fire(
+            'Add Items',
+            'Items has been added',
+            'success'
+        )
         console.log(result.data)
     } catch (e) {
         console.log(e)
@@ -32,18 +38,49 @@ const addItems =  async (item) => {
     
 }
 
-const editItems = () => {
-    
-}
-
-const deleteItems = async (id) => {
+const editItems = async (id, item) => {
     try {
-        let result = await axios({
-            method: 'DELETE',
-            url: URL + '/delete/' + id
+        let result = await axios ({
+            method: 'PUT',
+            url: URL + '/edit/' + id,
+            data: item
         })
 
-        console.log(result)
+        swal.fire(
+            'Edit Brands' +id,
+            'Brand ' +id+ 'has been added',
+            'success'
+        )
+        
+    } catch (e) {
+        console.log(e)
+    }
+    
+}
+const deleteItems = async (id) => {
+    try {
+        swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+          }).then(async (result) => {
+            if (result.isConfirmed) {
+                let result = await axios({
+                    method: 'DELETE',
+                    url: URL + '/delete/' + id
+                })
+                window.location.reload();
+              swal.fire(
+                'Deleted!',
+                'Your file has been deleted.',
+                'success'
+              )
+            }
+          })
     } catch (e) {
         console.log(e)
     }
